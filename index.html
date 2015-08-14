@@ -16,24 +16,47 @@
           <p> list </p>
         </div>
         <div class="col-md-8">
-          <div class="row">
+          <div class="row" id="message_list">
             <p>
               row1
             </p>
           </div>
           <div class="row">
-            <p>
-              row2
-            </p>
+            <form id="chat_form">
+              <input id="chat_input" class="form-control" placeholder="press Enter to send your message">
+            </form>
           </div>
         </div>
       </div>
     </div>
     <script>
-      var socket = io.connect('http://localhost:3000');
-      socket.on('news', function (data) {
-        console.log(data);
-        socket.emit('my other event', { my: 'data' });
+      function insertMessage(who, message) {
+        var list = $('#message_list');
+        list.append('<p>' + who + ': ' + message  + '</p>');
+      }
+
+      function insertInfo(info) {
+        var list = $('#message_list');
+        list.append('<p>' + info + '</p>');
+      }
+
+      var server = io.connect('http://localhost:3000');
+      server.on('connect', function(data) {
+        insertInfo('connectd!');
+        name = prompt("What's your nickname?");
+        server.emit('join', name);
+      });
+
+      $('#chat_form').submit(function(e){
+        var input = $('#chat_input');
+        var message = input.val();
+        input.val('');
+        server.emit('messages', message);
+        e.preventDefault();
+      });
+
+      server.on('messages', function(data) {
+        insertMessage(data.name, data.message);
       });
     </script>
   </body>
