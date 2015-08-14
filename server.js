@@ -21,12 +21,6 @@ io.sockets.on('connection', function (client) {
     client.name = name;
   });
   client.on('messages', function(data) {
-
-    var ep = new EventProxy();
-    ep.on('error', function(err) {
-      throw err;
-    });
-
     io.sockets.emit('messages', {
       name: client.name,
       message: data,
