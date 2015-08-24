@@ -33,6 +33,7 @@
       function insertMessage(who, message) {
         var list = $('#message_list');
         list.append('<p>' + who + ': ' + message  + '</p>');
+        list.scrollTop(Number.POSITIVE_INFINITY);
       }
 
       function insertInfo(info) {

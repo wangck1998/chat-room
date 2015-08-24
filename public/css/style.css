@@ -8,3 +8,8 @@
   margin-bottom: 50px;
   height: 500px;
 }
+
+#message_list {
+  max-height: 450px;
+  overflow: auto;
+}
